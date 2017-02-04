@@ -22,8 +22,8 @@ client.on('connection', function(socket) {
         client.emit('message-list', obj)
     });
 
-    socket.on('new-message', function(data) {
-        console.log(data.message);
+    socket.on('send-message', function(data) {
+        console.log(data);
         //I could send this to the DB directly from here, but I think the Laravel back end wants to do it.
 
         //maybe one of the key value pairs in the object is the website, this way the clients could all decide for them selves if they want to display it
