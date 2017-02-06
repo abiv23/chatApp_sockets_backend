@@ -14,6 +14,10 @@ let messages = [{
 client.on('connection', function(socket) {
   console.log('connected');
 
+  socket.on(`new-user`, function(data) {
+    client.emit(`${data.url}-add-new-user`, data);
+  });
+
     socket.on('first-contact', function(data) {
       console.log('im here');
         //Call the Laravel server, it looks for a cookie in the header,
