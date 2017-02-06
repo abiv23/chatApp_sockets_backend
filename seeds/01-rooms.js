@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
         }),
         knex('rooms').insert({
           id: 2,
-          name: 'localhost:3000'
+          name: 'localhost:3000$'
         })
       ]);
     });
