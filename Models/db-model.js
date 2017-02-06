@@ -1,5 +1,34 @@
+const request = require('request');
+
 class DBModel {
-  constructor(attributes) {
+
+  constructor(name) {
     this.attributes = attributes;
+    this.endpoints = endpoints;
+  }
+
+  save(info) {
+    return new Promise((resolve, reject) => {
+      let options = {
+        method: 'PUT',
+        uri: this.uri,
+        body: JSON.stringify(info)
+      }
+      return request(options, (error, response, body) => {
+        if (error) {
+          return reject(error);
+        } else {
+          return resolve(response);
+        }
+      });
+    });
+  }
+
+  get uri() {
+    return `chat.app/${this.name}s`;
+  }
+
+  makePath() {
+    return `/`
   }
 }
