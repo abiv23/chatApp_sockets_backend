@@ -8,6 +8,8 @@ class DBModel {
   }
 
   save(info) {
+    // logging message until DB server is ready.
+    return console.log('Saving info in DB (not really)');
     return new Promise((resolve, reject) => {
       let options = {
         method: 'PUT',
