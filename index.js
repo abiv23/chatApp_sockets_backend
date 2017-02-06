@@ -1,6 +1,7 @@
 const socket = require('socket.io');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4200;
 const client = require('socket.io').listen(port).sockets;
+// const messageDB = require('./models/message');
 
 let messages = [{
     name: "mob",
@@ -28,6 +29,7 @@ client.on('connection', function(socket) {
         socket.emit('message-list-and-name', obj)
     });
 
+
     socket.on('send-message', function(data) {
         console.log(data);
         //The trick here is that the data.url is the name of the event
@@ -35,6 +37,17 @@ client.on('connection', function(socket) {
         messages.push(data);
         console.log(messages);
         client.emit('www.google.com', data);
+    });
+
+    socket.on('new-message', function(data) {
+        console.log(data.message);
+        messageDB.save(data);
+        //I could send this to the DB directly from here, but I think the Laravel back end wants to do it.
+
+        //maybe one of the key value pairs in the object is the website, this way the clients could all decide for them selves if they want to display it
+
+        //Or I coud make a string out of the data.url - Duh, thats the best
+        socket.emit(data.url, data);
     });
 
     socket.on('disconnect', function() {
