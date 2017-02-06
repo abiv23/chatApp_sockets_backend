@@ -1,9 +1,10 @@
-const db = require('../connection');
+const db = require('./connection');
 const R = require('ramda');
-const password = require('../utils/password');
+
+
 
 module.exports = (function() {
-  const relations = ['user', 'room', 'message'];
+  const relations = ['users', 'rooms', 'messages'];
   const queries = {
     all: (rel) => db(rel),
     one: (rel, id) => db(rel).where('id', id)
@@ -45,17 +46,9 @@ module.exports = (function() {
     }
 
     add(info) {
-      if (!info.password) {
-        delete info.password;
-        return db(this.rel)
-          .returning(this._infoToArr(info))
-          .insert(info);
-      } else {
-        info.password = password.hash(info.password);
-        return db(this.rel)
-          .returning(this._infoToArr(info))
-          .insert(info);
-      }
+      return db(this.rel)
+        .returning(this._infoToArr(info))
+        .insert(info);
     }
 
     _infoToArr(info) {
@@ -66,7 +59,7 @@ module.exports = (function() {
   const main = function (relation) {
     if (!R.contains(relation, relations)) {
       return Promise.reject(
-        new Error('Query for a user or a marker!')
+        new Error('Unrecognized model name for query.')
       )
     } else {
       return new Query(relation);

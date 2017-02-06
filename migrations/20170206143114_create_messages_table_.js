@@ -7,6 +7,10 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('users')
       .onDelete('CASCADE');
+    table.integer('room_id')
+      .references('id')
+      .inTable('rooms')
+      .onDelete('CASCADE');
   });
 };
 

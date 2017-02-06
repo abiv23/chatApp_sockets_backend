@@ -1,10 +1,11 @@
 const express = require('express');
-const router = express.router();
-const query = '../db/query';
+const router = express.Router();
+const query = require('../db/query');
 
 
 router.get('/', function (req, res) {
-  query('user')
+  console.log('getting users');
+  query('users')
     .all()
     .then(users => {
       res.json(users);
@@ -13,10 +14,11 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-  query('user')
-    .add(req.body)
+  console.log('creating user');
+  query('users')
+    .add({username: 'testName'})
     .then(user => {
-      res.json(user);
+      return res.json(user);
     })
     .catch(console.error);
 });

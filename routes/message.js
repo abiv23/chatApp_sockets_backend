@@ -1,19 +1,20 @@
 const express = require('express');
-const router = express.router();
-const query = '../db/query';
-
+const router = express.Router();
+const query = require('../db/query');
+const formatResponse = require('../utilities/format-response');
 
 router.get('/', function (req, res) {
-  query('message')
+  query('messages')
     .all()
-    .then(users => {
-      res.json(users);
+    .then(formatResponse)
+    .then(data => {
+      res.json(data);
     })
     .catch(console.error);
 });
 
 router.post('/', function (req, res) {
-  query('message')
+  query('messages')
     .add(req.body)
     .then(user => {
       res.json(user);
@@ -21,13 +22,16 @@ router.post('/', function (req, res) {
     .catch(console.error);
 });
 
+
 router.get('/:id', function (req, res) {
-  query('message')
+  query('messages')
     .one(req.params.id)
     .then(user => {
       res.json(user);
     })
     .catch(console.error);
 });
+
+
 
 module.exports = router;
