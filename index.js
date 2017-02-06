@@ -1,5 +1,5 @@
 const socket = require('socket.io');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4200;
 const client = require('socket.io').listen(port).sockets;
 
 client.on('connection', function(socket) {
