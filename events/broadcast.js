@@ -9,7 +9,6 @@ module.exports = (function() {
   let streams = R.fromPairs(registeredEventNames.map(name => {
     return [[name], new Subject()]
   }));
-  console.log(streams);
 
   const shout = (eventName, data) => {
     if (!R.contains(eventName, registeredEventNames)) {
