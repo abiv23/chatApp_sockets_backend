@@ -1,14 +1,8 @@
 const db = require('./connection');
 const R = require('ramda');
 
-
-
 module.exports = (function() {
   const relations = ['users', 'rooms', 'messages'];
-  const queries = {
-    all: (rel) => db(rel),
-    one: (rel, id) => db(rel).where('id', id)
-  }
 
   class Query {
     constructor(rel) {

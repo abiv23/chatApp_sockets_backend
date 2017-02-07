@@ -1,7 +1,8 @@
 const socket = require('socket.io');
 const port = process.env.PORT || 4200;
 const client = require('socket.io').listen(port).sockets;
-// const messageDB = require('./models/message');
+const broadcast = require('./events/broadcast');
+require('./listeners/listener').listen();
 
 let messages = [{
     name: "mob",
@@ -41,7 +42,7 @@ client.on('connection', function(socket) {
 
     socket.on('new-message', function(data) {
         console.log(data.message);
-        messageDB.save(data);
+        broadcast.shout('newMessage', data.message);
         //I could send this to the DB directly from here, but I think the Laravel back end wants to do it.
 
         //maybe one of the key value pairs in the object is the website, this way the clients could all decide for them selves if they want to display it
