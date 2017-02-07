@@ -1,7 +1,9 @@
+const R = require('ramda');
 const express = require('express');
 const router = express.Router();
 const query = require('../db/query');
 const formatResponse = require('../utilities/format-response');
+
 
 router.get('/', function (req, res) {
   query('rooms')
@@ -24,19 +26,22 @@ router.post('/', function (req, res) {
 router.get('/:name', function (req, res) {
   query('rooms')
     .by('name', req.params.name)
+    .then(R.head)
     .then(room => {
       query('messages')
         .by('room_id', room.id)
         .then(messages => {
-          return {room, messages};
+          return Promise.all(messages.map(message => {
+            return query('users')
+              .one(message.user_id)
+              .then(user => R.assoc('user', user, message))
+          }))
+          .then(userMessages => {
+            return res.json({room, messages: userMessages})
+          })
         })
-        .then(formatResponse)
-        .then(response => {
-          return res.json(response);
-        })
-        .catch(console.error);
+
     })
-    .catch(console.error);
 });
 
 module.exports = router;

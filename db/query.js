@@ -26,9 +26,10 @@ module.exports = (function() {
     }
 
     by(field, val) {
+      console.log(field);
+      console.log(val);
       return db(this.rel)
         .where(field, val)
-        .first();
     }
 
     delete(id) {
